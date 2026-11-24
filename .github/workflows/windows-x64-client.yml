@@ -218,7 +218,7 @@ jobs:
           pip3 install -r requirements.txt
           python3 ./generate.py -f ../../rustdesk/ -o . -e ../../rustdesk/${{ env.APP_EXE }}
           mkdir -p ../../SignOutput
-          mv ./target/release/rustdesk-portable-packer.exe ../../SignOutput/ITDavesHelpdesk-${{ env.VERSION }}-x86_64.exe
+          mv ../../target/release/rustdesk-portable-packer.exe ../../SignOutput/ITDavesHelpdesk-${{ env.VERSION }}-x86_64.exe
           popd
           sha256sum ./SignOutput/ITDavesHelpdesk-*.exe
 
