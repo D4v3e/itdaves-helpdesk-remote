@@ -226,15 +226,15 @@ jobs:
         uses: microsoft/setup-msbuild@6fb02220983dee41ce7ae257b6f4d8f9bf5ed4ce # v2
 
       - name: Build msi
-        shell: pwsh
+        shell: bash
         run: |
           pushd ./res/msi
-          python preprocess.py --arp -d ../../rustdesk --app-name ${{ env.APP_NAME_MSI }} --manufacturer "${{ env.MANUFACTURER }}" --custom-arp "{\"Contact\": {\"msi\": \"ARPCONTACT\", \"v\": \"https://github.com/${{ github.repository }}\"}, \"HelpLink\": {\"msi\": \"ARPHELPLINK\", \"v\": \"https://github.com/${{ github.repository }}/issues/\"}, \"ReadMe\": {\"msi\": \"ARPREADME\", \"v\": \"https://github.com/${{ github.repository }}\"}}"
+          python preprocess.py --arp -d ../../rustdesk --app-name ${{ env.APP_NAME_MSI }} --manufacturer "${{ env.MANUFACTURER }}" --custom-arp '{"Contact": {"msi": "ARPCONTACT", "v": "https://github.com/${{ github.repository }}"}, "HelpLink": {"msi": "ARPHELPLINK", "v": "https://github.com/${{ github.repository }}/issues/"}, "ReadMe": {"msi": "ARPREADME", "v": "https://github.com/${{ github.repository }}"}}'
           nuget restore msi.sln
-          msbuild msi.sln -p:Configuration=Release -p:Platform=x64 /p:TargetVersion=Windows10
-          $msi = Get-ChildItem ./Package/bin/*/Release/en-us/Package.msi | Select-Object -First 1
-          New-Item -ItemType Directory -Force -Path ../../SignOutput | Out-Null
-          mv $msi.FullName ../../SignOutput/ITDavesHelpdesk-${{ env.VERSION }}-x86_64.msi
+          msbuild msi.sln -p:Configuration=Release -p:Platform=x64 -p:TargetVersion=Windows10
+          msi=$(ls ./Package/bin/*/Release/en-us/Package.msi | head -n 1)
+          mkdir -p ../../SignOutput
+          mv "$msi" ../../SignOutput/ITDavesHelpdesk-${{ env.VERSION }}-x86_64.msi
           popd
           sha256sum ./SignOutput/ITDavesHelpdesk-*.msi
 
