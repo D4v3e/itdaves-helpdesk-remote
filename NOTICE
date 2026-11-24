@@ -1,0 +1,29 @@
+IT Dave's Helpdesk Remote Support
+=================================
+
+This program is a modified version of RustDesk 1.5.3
+  https://github.com/rustdesk/rustdesk
+  commit 95cca3f661f635b3cc85c04935fe8d96d8f432ef
+  tag 1.5.3
+
+Copyright © 2020-2026 Purslane Tech Pte. Ltd. and RustDesk contributors.
+Modifications © 2026 IT Dave's Helpdesk.
+
+RustDesk and this modified version are licensed under the GNU Affero
+General Public License, version 3. A copy of the licence is in the
+file LICENCE (the upstream spelling).
+
+The libs/hbb_common tree was taken from
+  https://github.com/rustdesk/hbb_common
+  commit fae47e024dd83cef6aaecde0aa7d11731df11649
+and is vendored here so that the corresponding source for the modified
+client is in one repository. It remains AGPL-3.0.
+
+This product is not affiliated with, sponsored by, or endorsed by the
+RustDesk project or Purslane Tech Pte. Ltd. The RustDesk name and logo
+are used only to identify the upstream software that this work is based
+on.
+
+IT Dave's Helpdesk branding (name, logo, colours) is distinct from
+RustDesk. Southern Computer Solutions / SCS names must not appear in
+this client.

@@ -1234,6 +1234,10 @@ pub fn is_rustdesk() -> bool {
 
 #[inline]
 pub fn get_uri_prefix() -> String {
+    // APP_NAME has spaces and an apostrophe; the URI scheme must be a single token.
+    if !is_rustdesk() {
+        return "itdaveshelpdesk://".to_owned();
+    }
     format!("{}://", get_app_name().to_lowercase())
 }
 
@@ -2506,7 +2510,29 @@ pub fn rustdesk_interval(i: Interval) -> ThrottledInterval {
     ThrottledInterval::new(i)
 }
 
+pub fn apply_itdaves_branded_defaults() {
+    // Compile-time defaults in hbb_common also point here. These overwrite maps
+    // lock the ID server and key so a renamed exe still uses this host, and so a
+    // leftover official RustDesk config cannot take over.
+    *config::APP_NAME.write().unwrap() = "IT Dave's Helpdesk".to_owned();
+    *config::PROD_RENDEZVOUS_SERVER.write().unwrap() =
+        "remote.itdaveshelpdesk.co.uk".to_owned();
+    {
+        let mut overwrite = config::OVERWRITE_SETTINGS.write().unwrap();
+        overwrite.insert(
+            keys::OPTION_CUSTOM_RENDEZVOUS_SERVER.to_string(),
+            "remote.itdaveshelpdesk.co.uk".to_owned(),
+        );
+        overwrite.insert("key".to_string(), config::RS_PUB_KEY.to_string());
+    }
+    {
+        let mut builtin = config::BUILTIN_SETTINGS.write().unwrap();
+        builtin.insert("hide-powered-by-me".to_string(), "Y".to_owned());
+    }
+}
+
 pub fn load_custom_client() {
+    apply_itdaves_branded_defaults();
     #[cfg(debug_assertions)]
     if let Ok(data) = std::fs::read_to_string("./custom.txt") {
         read_custom_client(data.trim());
